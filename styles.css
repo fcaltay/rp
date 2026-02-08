@@ -76,7 +76,9 @@ body{
   align-items:flex-end;
   flex-wrap:wrap;
 }
+.card-header h2{ margin:0; font-size:16px; }
 .hint{ margin:4px 0 0; font-size:12px; color:var(--muted); }
+.content{ padding:0 12px 12px; }
 
 /* ================= MONTH NAV ================= */
 .month-nav{
@@ -95,6 +97,7 @@ body{
   background:rgba(0,0,0,.15);
   color:var(--text);
   cursor:pointer;
+  font-size:18px;
 }
 
 /* ================= TOOLS ================= */
@@ -162,15 +165,53 @@ body{
   border:1px solid rgba(255,255,255,.1);
   background:rgba(0,0,0,.1);
 }
+.day.selected{
+  outline: 2px solid rgba(215,181,91,.45);
+  box-shadow: 0 0 0 6px rgba(215,181,91,.10);
+}
+.day .num{ font-size:12px; color: rgba(233,245,239,.78); }
+.day .badges{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.badge{
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.10);
+  max-width:100%;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.badge.host{ border-color: rgba(215,181,91,.38); background: rgba(215,181,91,.14); }
+.badge.guest{ border-color: rgba(45,212,163,.35); background: rgba(45,212,163,.12); }
+
+/* ================= LEGEND (🏠/🚗) FIX ================= */
+.legend{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  padding: 10px 12px 12px;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.12);
+  font-size:13px;
+  line-height:1;
+}
+.pill.host{ border-color: rgba(215,181,91,.45); background: rgba(215,181,91,.14); }
+.pill.guest{ border-color: rgba(45,212,163,.40); background: rgba(45,212,163,.12); }
 
 /* ================= FORM ================= */
 form{ width:100%; }
 
-/* LABEL + FIELD FIX (KRİTİK) */
-label.field{
-  display:block;
-  width:100%;
-}
+/* Label/field fix */
+label.field{ display:block; width:100%; }
 .field{
   display:flex;
   flex-direction:column;
@@ -183,7 +224,7 @@ label.field{
   color:rgba(233,245,239,.8);
 }
 
-/* INPUT / TEXTAREA TAM GENİŞLİK */
+/* Inputs full width */
 .field input,
 .field select,
 .field textarea{
@@ -197,21 +238,22 @@ label.field{
   color:var(--text);
 }
 
-/* MENU & PLACE EXTRA GARANTİ */
-#menuField,
-#placeField{
+/* Menu/Place absolute guarantee */
+#menuField, #placeField{
   width:100%;
   display:flex;
   flex-direction:column;
   align-items:stretch;
 }
-#menuField textarea,
-#placeField textarea{
-  width:100%;
+#menu, #place, #note{
   display:block;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  align-self:stretch;
 }
 
-/* ================= BUTTONS ================= */
+/* Buttons */
 .form-actions{
   display:flex;
   gap:8px;
@@ -230,14 +272,50 @@ label.field{
   border-color:rgba(215,181,91,.45);
   background:linear-gradient(140deg,rgba(215,181,91,.22),rgba(45,212,163,.1));
 }
+.btn.ghost{ background: rgba(0,0,0,.08); }
 .btn.danger{
   border-color:rgba(255,91,91,.45);
   background:rgba(255,91,91,.12);
 }
+.btn.small{ padding:8px 10px; border-radius:12px; font-size:12px; }
 
-/* ================= NEXT DAYS ================= */
-.next-head{ display:flex; justify-content:space-between; align-items:center; }
-.next-list{ display:flex; flex-direction:column; gap:10px; }
+/* Separator */
+.sep{
+  border:0;
+  height:1px;
+  background: rgba(255,255,255,.10);
+  margin: 12px 0;
+}
+
+/* ================= NEXT DAYS (ALT UI FIX) ================= */
+.next-days{
+  margin-top: 6px;
+  padding: 8px 0 0;
+}
+.next-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding: 0 2px;
+}
+.next-head h3{
+  margin:0;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.next-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:10px;
+}
+.next-card{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.10);
+  border-radius: 16px;
+  padding: 12px;
+}
 
 /* ================= TOAST ================= */
 .toast{
@@ -251,11 +329,17 @@ label.field{
   border:1px solid rgba(255,255,255,.14);
   color:var(--text);
   opacity:0;
+  pointer-events:none;
+  transition: opacity .18s ease, transform .18s ease;
 }
-.toast.show{ opacity:1; }
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(-4px);
+}
 
 /* ================= MOBILE ================= */
 @media (max-width:720px){
+  .content{ padding: 0 10px 12px; }
 
   .card-header{
     display:grid;
@@ -274,6 +358,14 @@ label.field{
 
   .calendar{
     padding:0 10px 10px;
+  }
+
+  .legend{
+    padding: 8px 10px 10px;
+  }
+
+  .sep{
+    margin:10px 0;
   }
 }
 
