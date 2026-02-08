@@ -92,7 +92,15 @@ body{
 }
 .iconbtn:hover{border-color: rgba(215,181,91,.45)}
 
-.tools{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+/* TOOLS */
+.tools{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
 .search{
   width:240px;
   max-width: 70vw;
@@ -105,20 +113,43 @@ body{
 }
 .search::placeholder{color: rgba(233,245,239,.55)}
 
-.chipset{display:flex; gap:6px; padding:6px; border-radius:14px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.10)}
+/* CHIP'LER */
+.chipset{
+  display:flex;
+  gap:6px;
+  padding:6px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.10);
+  flex-wrap:nowrap;
+  overflow:hidden;
+}
+
 .chip{
+  flex:1 1 0;
+  min-width: 70px;
+  text-align:center;
   cursor:pointer;
-  padding:8px 10px;
+  padding:9px 10px;
+  line-height: 1;
   border-radius: 12px;
   border:1px solid transparent;
   background: transparent;
   color: var(--muted);
   font-size: 12px;
+  white-space:nowrap;
 }
+
 .chip.active{
   color: var(--text);
   border-color: rgba(215,181,91,.35);
   background: rgba(215,181,91,.14);
+}
+
+@media (max-width: 520px){
+  .tools{justify-content:flex-start}
+  .search{width:100%}
+  .chipset{width:100%}
 }
 
 .calendar{padding:0 12px 12px}
@@ -177,6 +208,52 @@ body{
 .pill.host{border-color: rgba(215,181,91,.45); background: rgba(215,181,91,.14)}
 .pill.guest{border-color: rgba(45,212,163,.40); background: rgba(45,212,163,.12)}
 
+/* GÜN DETAYI */
+.day-details{
+  margin: 0 14px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.10);
+  padding: 12px;
+}
+.day-details-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.day-details-head h3{
+  margin:0;
+  font-size:14px;
+}
+.day-details-body{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.day-card{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.10);
+  border-radius: 14px;
+  padding: 10px;
+}
+.day-card .top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+.day-card .top strong{font-size:13px}
+.day-card p{
+  margin:6px 0 0;
+  color: var(--muted);
+  font-size:12px;
+  line-height:1.35;
+}
+.day-card .mini-actions{display:flex; gap:6px}
+
+/* FORM */
 .form-card form{padding: 0 14px 12px}
 .field{display:flex; flex-direction:column; gap:6px; margin:10px 0}
 .field span{font-size:12px; color: rgba(233,245,239,.78)}
@@ -190,9 +267,6 @@ input[type="date"], input[type="text"], select, textarea{
 }
 textarea{resize:vertical}
 .two{display:grid; grid-template-columns:1fr; gap:10px}
-@media (min-width: 980px){
-  .two{grid-template-columns:1fr}
-}
 
 .form-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
 
@@ -213,10 +287,6 @@ textarea{resize:vertical}
 .btn.danger{
   border-color: rgba(255,91,91,.45);
   background: rgba(255,91,91,.12);
-}
-.btn.file{position:relative; overflow:hidden}
-.btn.file input{
-  position:absolute; inset:0; opacity:0; cursor:pointer;
 }
 
 .sep{border:none; border-top:1px solid rgba(255,255,255,.10); margin:10px 0}
@@ -248,6 +318,7 @@ textarea{resize:vertical}
 .item h4{margin:0; font-size:14px}
 .item p{margin:4px 0 0; color: var(--muted); font-size:12px; line-height:1.35}
 .item .actions{display:flex; gap:6px}
+
 .smallbtn{
   cursor:pointer;
   padding:8px 10px;
