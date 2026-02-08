@@ -20,18 +20,24 @@ const noteInput = el("note");
 const btnDelete = el("btnDelete");
 const btnNew = el("btnNew");
 const btnToday = el("btnToday");
-const btnExport = el("btnExport");
 const btnReset = el("btnReset");
-const btnPrint = el("btnPrint");
+
 const importFile = el("importFile");
 const searchInput = el("search");
 
 const menuField = el("menuField");
 const placeField = el("placeField");
 
+/* Gün detayı paneli */
+const dayDetails = el("dayDetails");
+const dayDetailsTitle = el("dayDetailsTitle");
+const dayDetailsBody = el("dayDetailsBody");
+const btnAddForSelected = el("btnAddForSelected");
+
 let viewDate = new Date(); // current month
 let filter = "all";
 let search = "";
+let selectedISO = toISODate(new Date());
 
 function pad(n){ return String(n).padStart(2,"0"); }
 function toISODate(d){
@@ -108,7 +114,6 @@ function renderCalendar(){
   const firstDow = (first.getDay() + 6) % 7; // Monday=0
   const daysInMonth = last.getDate();
 
-  // total cells: 42 usually
   grid.innerHTML = "";
   const todayISO = toISODate(new Date());
 
@@ -123,12 +128,10 @@ function renderCalendar(){
     let dayNum, cellDate, muted = false;
 
     if(i < firstDow){
-      // prev month
       dayNum = prevDays - (firstDow - 1 - i);
       cellDate = new Date(viewDate.getFullYear(), viewDate.getMonth()-1, dayNum);
       muted = true;
     }else if(i >= firstDow + daysInMonth){
-      // next month
       dayNum = i - (firstDow + daysInMonth) + 1;
       cellDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, dayNum);
       muted = true;
@@ -147,9 +150,9 @@ function renderCalendar(){
       <div class="badges"></div>
     `;
 
-    // badges (max 3)
     const dayEvents = getEventsForDate(events, iso);
     const badges = cell.querySelector(".badges");
+
     dayEvents.slice(0,3).forEach(ev=>{
       const b = document.createElement("div");
       b.className = `badge ${ev.type}`;
@@ -157,6 +160,7 @@ function renderCalendar(){
       b.textContent = ev.type === "host" ? `🏠 ${ev.who}` : `🚗 ${ev.who}`;
       badges.appendChild(b);
     });
+
     if(dayEvents.length > 3){
       const more = document.createElement("div");
       more.className = "badge";
@@ -164,20 +168,23 @@ function renderCalendar(){
       badges.appendChild(more);
     }
 
-    // click → set date and focus form
+    // click → set date, show day details
     cell.addEventListener("click", ()=>{
       dateInput.value = iso;
       el("formHint").textContent = muted
         ? "Başka ay seçtin — yine de ekleyebilirsin."
         : "Seçili tarihe kayıt ekleyebilirsin.";
       clearEditing(false);
-      window.scrollTo({top: 0, behavior: "smooth"});
+      renderDayDetails(iso);
     });
 
     grid.appendChild(cell);
   }
 
   renderList();
+
+  // Ay değişince seçili gün aynı ayda değilse bugün'e çek
+  if(!selectedISO) selectedISO = toISODate(new Date());
 }
 
 function renderList(){
@@ -226,10 +233,61 @@ function renderList(){
 
     item.querySelector('[data-action="edit"]').addEventListener("click", ()=>{
       loadToForm(ev.id);
+      renderDayDetails(ev.date);
       window.scrollTo({top: 0, behavior:"smooth"});
     });
 
     list.appendChild(item);
+  });
+}
+
+function renderDayDetails(iso){
+  const events = loadEvents();
+  const dayEvents = events
+    .filter(e => e.date === iso)
+    .filter(matchesFilterAndSearch)
+    .sort((a,b)=> (a.createdAt||0) - (b.createdAt||0));
+
+  selectedISO = iso;
+  if(dayDetailsTitle) dayDetailsTitle.textContent = `Gün Detayı: ${iso}`;
+
+  if(!dayDetailsBody) return;
+
+  if(dayEvents.length === 0){
+    dayDetailsBody.innerHTML = `<p class="hint">Bu gün için kayıt yok. “Bu güne ekle” ile hızlıca ekleyebilirsin.</p>`;
+    return;
+  }
+
+  dayDetailsBody.innerHTML = "";
+  dayEvents.forEach(ev=>{
+    const typeText = ev.type === "host" ? "🏠 Bizde iftar" : "🚗 Gidiyoruz";
+    const detail = ev.type === "host"
+      ? (ev.menu ? `Menü: ${escapeHtml(ev.menu)}` : "Menü: —")
+      : (ev.place ? `Not: ${escapeHtml(ev.place)}` : "Not: —");
+
+    const note = ev.note ? `<p>Ek not: ${escapeHtml(ev.note)}</p>` : "";
+
+    const card = document.createElement("div");
+    card.className = "day-card";
+    card.innerHTML = `
+      <div class="top">
+        <div>
+          <strong>${typeText} — ${escapeHtml(ev.who)}</strong>
+          <p>${detail}</p>
+          ${note}
+        </div>
+        <div class="mini-actions">
+          <button class="smallbtn" data-act="edit">Düzenle</button>
+        </div>
+      </div>
+    `;
+
+    card.querySelector('[data-act="edit"]').addEventListener("click", ()=>{
+      loadToForm(ev.id);
+      window.scrollTo({top: 0, behavior:"smooth"});
+    });
+
+    dayDetailsBody.appendChild(card);
   });
 }
 
@@ -289,22 +347,23 @@ function deleteEventById(id){
   saveEvents(events);
 }
 
-function setFilter(newFilter){
-  filter = newFilter;
-  document.querySelectorAll(".chip").forEach(c=>{
-    c.classList.toggle("active", c.dataset.filter === newFilter);
-  });
-  renderCalendar();
-}
-
-// Events
+/* Filter chips */
 document.querySelectorAll(".chip").forEach(chip=>{
-  chip.addEventListener("click", ()=> setFilter(chip.dataset.filter));
+  chip.addEventListener("click", ()=>{
+    filter = chip.dataset.filter;
+    document.querySelectorAll(".chip").forEach(c=>{
+      c.classList.toggle("active", c.dataset.filter === filter);
+    });
+    renderCalendar();
+    renderDayDetails(selectedISO || dateInput.value || toISODate(new Date()));
+  });
 });
 
+/* search */
 searchInput.addEventListener("input", (e)=>{
   search = e.target.value.trim();
   renderCalendar();
+  renderDayDetails(selectedISO || dateInput.value || toISODate(new Date()));
 });
 
 typeInput.addEventListener("change", applyTypeVisibility);
@@ -330,6 +389,7 @@ form.addEventListener("submit", (e)=>{
 
   clearEditing(false);
   renderCalendar();
+  renderDayDetails(date);
 });
 
 btnDelete.addEventListener("click", ()=>{
@@ -339,6 +399,7 @@ btnDelete.addEventListener("click", ()=>{
     deleteEventById(id);
     clearEditing(false);
     renderCalendar();
+    renderDayDetails(dateInput.value || selectedISO || toISODate(new Date()));
   }
 });
 
@@ -361,43 +422,7 @@ btnToday.addEventListener("click", ()=>{
   viewDate = new Date();
   dateInput.value = toISODate(new Date());
   renderCalendar();
-});
-
-btnExport.addEventListener("click", ()=>{
-  const data = loadEvents();
-  const blob = new Blob([JSON.stringify({version:1, exportedAt: Date.now(), data}, null, 2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "ramazan-iftar-takvimi.json";
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-importFile.addEventListener("change", async (e)=>{
-  const file = e.target.files?.[0];
-  if(!file) return;
-  try{
-    const text = await file.text();
-    const parsed = JSON.parse(text);
-    const incoming = Array.isArray(parsed) ? parsed : parsed.data;
-    if(!Array.isArray(incoming)) throw new Error("Format yanlış");
-
-    // Merge: id based
-    const current = loadEvents();
-    const byId = new Map(current.map(x=>[x.id, x]));
-    incoming.forEach(x=>{
-      if(!x.id) x.id = uid();
-      byId.set(x.id, { ...byId.get(x.id), ...x });
-    });
-    saveEvents(Array.from(byId.values()));
-    renderCalendar();
-    alert("İçe aktarma tamam.");
-  }catch(err){
-    alert("İçe aktarma başarısız: dosya formatı uygun değil.");
-  }finally{
-    importFile.value = "";
-  }
+  renderDayDetails(dateInput.value);
 });
 
 btnReset.addEventListener("click", ()=>{
@@ -405,15 +430,22 @@ btnReset.addEventListener("click", ()=>{
     localStorage.removeItem(LS_KEY);
     clearEditing(true);
     renderCalendar();
+    renderDayDetails(dateInput.value || toISODate(new Date()));
   }
 });
 
-btnPrint.addEventListener("click", ()=> window.print());
+btnAddForSelected?.addEventListener("click", ()=>{
+  dateInput.value = selectedISO || toISODate(new Date());
+  clearEditing(false);
+  el("formHint").textContent = "Seçili gün için yeni kayıt ekle.";
+  window.scrollTo({top: 0, behavior:"smooth"});
+});
 
-// Init
+/* Init */
 (function init(){
-  // default date: today
   dateInput.value = toISODate(new Date());
+  selectedISO = dateInput.value;
   applyTypeVisibility();
   renderCalendar();
+  renderDayDetails(dateInput.value);
 })();
