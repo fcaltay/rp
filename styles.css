@@ -1,27 +1,27 @@
 :root{
   --bg1:#071a14;
   --bg2:#0b2a20;
-  --card: rgba(14,47,37,.75);
-  --card2: rgba(8,30,22,.75);
+  --card:#0e2f25cc;
+  --card2:#081e16cc;
   --text:#e9f5ef;
   --muted:#b6d0c5;
   --gold:#d7b55b;
   --green:#2dd4a3;
   --danger:#ff5b5b;
-  --shadow: 0 12px 40px rgba(0,0,0,.35);
-  --radius: 18px;
+  --shadow:0 12px 40px rgba(0,0,0,.35);
+  --radius:18px;
 }
 
+/* RESET */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
-
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
   color:var(--text);
   background:
-    radial-gradient(1000px 600px at 10% 10%, rgba(215,181,91,.16), transparent 60%),
-    radial-gradient(900px 500px at 90% 20%, rgba(45,212,163,.14), transparent 55%),
+    radial-gradient(900px 500px at 10% 10%, rgba(215,181,91,.15), transparent 60%),
+    radial-gradient(900px 500px at 90% 20%, rgba(45,212,163,.12), transparent 55%),
     linear-gradient(160deg,var(--bg1),var(--bg2));
 }
 
@@ -40,132 +40,137 @@ body{
 .moon{
   width:42px;height:42px;border-radius:14px;
   display:grid;place-items:center;
-  background: linear-gradient(145deg, rgba(215,181,91,.22), rgba(45,212,163,.10));
+  background:linear-gradient(145deg,rgba(215,181,91,.22),rgba(45,212,163,.1));
   border:1px solid rgba(215,181,91,.35);
-  box-shadow: var(--shadow);
+  box-shadow:var(--shadow);
   font-size:22px;
 }
 .header-actions{ display:flex; gap:8px; flex-wrap:wrap; }
 
 /* ================= LAYOUT ================= */
 .layout{
-  padding: 10px 14px 16px;
+  padding:10px 14px 16px;
   display:grid;
-  grid-template-columns: 1.25fr .95fr;
+  grid-template-columns:1.25fr .95fr;
   gap:14px;
 }
-@media (max-width: 980px){
-  .layout{ grid-template-columns: 1fr; }
+@media (max-width:980px){
+  .layout{ grid-template-columns:1fr; }
 }
 
 /* ================= CARD ================= */
 .card{
-  background: linear-gradient(180deg, var(--card), var(--card2));
+  background:linear-gradient(180deg,var(--card),var(--card2));
   border:1px solid rgba(255,255,255,.08);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
   overflow:hidden;
 }
 
 /* ================= CARD HEADER ================= */
 .card-header{
-  padding: 12px 12px 8px;
+  padding:12px 12px 8px;
   display:flex;
-  gap:12px;
+  gap:10px;
   justify-content:space-between;
   align-items:flex-end;
   flex-wrap:wrap;
 }
-.card-header h2{ margin:0; font-size:16px; }
 .hint{ margin:4px 0 0; font-size:12px; color:var(--muted); }
-.content{ padding: 0 12px 12px; }
 
 /* ================= MONTH NAV ================= */
-.month-nav{ display:flex; gap:10px; align-items:center; }
-.month-title-wrap h2{ margin:0; font-size:18px; }
+.month-nav{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.month-title-wrap h2{
+  margin:0;
+  font-size:18px;
+}
 .iconbtn{
-  width:36px;height:36px;border-radius:14px;
+  width:36px;height:36px;
+  border-radius:14px;
   border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.15);
+  background:rgba(0,0,0,.15);
   color:var(--text);
   cursor:pointer;
-  font-size:18px;
 }
 
 /* ================= TOOLS ================= */
 .tools{
   display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:flex-end;
-  flex: 1 1 420px;
   flex-wrap:wrap;
+  gap:8px;
+  flex:1 1 100%;
+  justify-content:flex-end;
 }
 
-/* ================= FILTER CHIPS ================= */
+/* ================= FILTER ================= */
 .chipset{
   display:flex;
+  flex-wrap:wrap;
   gap:6px;
-  padding:6px;
+  padding:4px;
+  width:100%;
   border-radius:14px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.10);
-  flex-wrap: wrap;
-  width: 100%;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.1);
 }
 .chip{
-  flex: 1 1 30%;
-  min-width: 96px;
-  padding:9px 10px;
-  border-radius: 12px;
-  background: transparent;
-  color: var(--muted);
-  border:1px solid transparent;
+  flex:1 1 30%;
+  min-width:92px;
+  padding:8px;
   font-size:12px;
+  border-radius:12px;
+  border:1px solid transparent;
+  background:none;
+  color:var(--muted);
   text-align:center;
   cursor:pointer;
-  white-space:nowrap;
 }
 .chip.active{
-  color: var(--text);
-  border-color: rgba(215,181,91,.35);
-  background: rgba(215,181,91,.14);
+  color:var(--text);
+  border-color:rgba(215,181,91,.4);
+  background:rgba(215,181,91,.14);
 }
 
 /* ================= SEARCH ================= */
 .search{
-  width: 100%;
-  padding:10px 12px;
-  border-radius: 14px;
+  width:100%;
+  padding:9px 10px;
+  border-radius:14px;
   border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.14);
+  background:rgba(0,0,0,.14);
   color:var(--text);
 }
-.search::placeholder{ color: rgba(233,245,239,.55); }
 
 /* ================= CALENDAR ================= */
-.calendar{ padding: 0 12px 12px; }
-.dow, .grid{ display:grid; grid-template-columns:repeat(7, 1fr); gap:8px; }
-.dow{ padding:10px 2px 8px; font-size:12px; color:rgba(233,245,239,.7); }
-.grid{ padding-bottom:10px; }
+.calendar{ padding:0 12px 12px; }
+.dow,.grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.dow{ padding:6px 2px; font-size:12px; color:rgba(233,245,239,.7); }
+.grid{ padding-bottom:8px; }
 
 .day{
-  min-height: 86px;
-  border-radius: 16px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.10);
-  padding:10px;
-  cursor:pointer;
+  min-height:84px;
+  padding:8px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.1);
 }
 
 /* ================= FORM ================= */
 form{ width:100%; }
 
+/* LABEL + FIELD FIX (KRİTİK) */
 label.field{
   display:block;
   width:100%;
 }
-
 .field{
   display:flex;
   flex-direction:column;
@@ -175,26 +180,35 @@ label.field{
 }
 .field span{
   font-size:12px;
-  color:rgba(233,245,239,.78);
+  color:rgba(233,245,239,.8);
 }
 
+/* INPUT / TEXTAREA TAM GENİŞLİK */
 .field input,
 .field select,
 .field textarea{
   width:100%;
+  max-width:100%;
+  min-width:0;
   padding:10px 12px;
   border-radius:14px;
   border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.12);
+  background:rgba(0,0,0,.12);
   color:var(--text);
 }
 
-textarea{ resize:vertical; }
-
-/* Menü / Yer alanları kesin tam genişlik */
+/* MENU & PLACE EXTRA GARANTİ */
 #menuField,
 #placeField{
-  width:100% !important;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+}
+#menuField textarea,
+#placeField textarea{
+  width:100%;
+  display:block;
 }
 
 /* ================= BUTTONS ================= */
@@ -208,47 +222,39 @@ textarea{ resize:vertical; }
   padding:10px 12px;
   border-radius:14px;
   border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.12);
+  background:rgba(0,0,0,.12);
   color:var(--text);
   cursor:pointer;
 }
 .btn.primary{
-  border-color: rgba(215,181,91,.45);
-  background: linear-gradient(140deg, rgba(215,181,91,.20), rgba(45,212,163,.10));
+  border-color:rgba(215,181,91,.45);
+  background:linear-gradient(140deg,rgba(215,181,91,.22),rgba(45,212,163,.1));
 }
-.btn.ghost{ background: rgba(0,0,0,.08); }
 .btn.danger{
-  border-color: rgba(255,91,91,.45);
-  background: rgba(255,91,91,.12);
+  border-color:rgba(255,91,91,.45);
+  background:rgba(255,91,91,.12);
 }
 
 /* ================= NEXT DAYS ================= */
-.next-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
-.next-list{ display:flex; flex-direction:column; gap:10px; margin-top:10px; }
-.next-card{
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.10);
-  border-radius:16px;
-  padding:10px;
-}
+.next-head{ display:flex; justify-content:space-between; align-items:center; }
+.next-list{ display:flex; flex-direction:column; gap:10px; }
 
 /* ================= TOAST ================= */
 .toast{
-  position: fixed;
+  position:fixed;
   left:50%;
   bottom:16px;
   transform:translateX(-50%);
-  background:rgba(0,0,0,.55);
-  border:1px solid rgba(255,255,255,.14);
   padding:10px 12px;
   border-radius:14px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.14);
   color:var(--text);
   opacity:0;
-  pointer-events:none;
 }
 .toast.show{ opacity:1; }
 
-/* ================= MOBILE FIX ================= */
+/* ================= MOBILE ================= */
 @media (max-width:720px){
 
   .card-header{
@@ -269,8 +275,6 @@ textarea{ resize:vertical; }
   .calendar{
     padding:0 10px 10px;
   }
-
-  .chip{ min-width:92px; }
 }
 
 @media (max-width:380px){
