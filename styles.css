@@ -100,7 +100,7 @@ body{
   flex-wrap:wrap;
 }
 
-/* CHIPSET — mobilde kırpma yok */
+/* CHIPSET */
 .chipset{
   display:flex;
   gap:6px;
@@ -142,17 +142,6 @@ body{
   outline:none;
 }
 .search::placeholder{ color: rgba(233,245,239,.55); }
-
-/* Mobile header layout */
-@media (max-width: 720px){
-  .card-header{ flex-direction:column; align-items:stretch; }
-  .month-nav{ width:100%; justify-content:space-between; }
-  .tools{ width:100%; justify-content:flex-start; }
-  .chip{ min-width: 92px; }
-}
-@media (max-width: 380px){
-  .chip{ flex:1 1 100%; min-width: 0; }
-}
 
 /* CALENDAR */
 .calendar{ padding: 0 12px 12px; }
@@ -356,57 +345,96 @@ textarea{ resize:vertical; }
 }
 .smallbtn:hover{ border-color: rgba(215,181,91,.35); }
 
-/* ✅ MOBİLDE ÜST BÖLÜM BOŞLUKLARINI SIKIŞTIR */
+/* =========================================================
+   ✅ MOBİL: ÜST BOŞLUKLARI KÖKTEN DÜZELT (GRID + RESET)
+   ========================================================= */
 @media (max-width: 720px){
 
-  /* Kart başlığı (Şubat 2026 + filtre + ara) */
+  /* Header artık grid: Ay satırı / Filtre / Arama */
   .card-header{
-    padding: 10px 10px 6px;   /* önce 12/8 gibi büyüktü */
-    gap: 8px;                 /* önce 12px */
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto !important;
+    row-gap: 6px !important;
+    padding: 8px 10px 6px !important;
+    align-items: start !important;
+    justify-content: start !important;
   }
 
-  /* Şubat 2026 ile filtre satırı arası */
+  /* Ay satırı */
   .month-nav{
-    gap: 8px;                 /* daha sıkı */
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 36px 1fr 36px !important;
+    column-gap: 8px !important;
+    align-items: center !important;
+    margin: 0 !important;
+    gap: 0 !important;
   }
+
+  /* Başlık ve hint margin reset */
+  #monthTitle{
+    margin: 0 !important;
+    line-height: 1.1 !important;
+  }
+  .hint{
+    margin: 0 !important;
+    line-height: 1.1 !important;
+  }
+
+  /* Hint'i kaldır (en büyük boşluk kaynağı) */
   .month-title-wrap .hint{
-    margin-top: 2px;          /* 4px yerine */
+    display: none !important;
   }
 
-  /* Filtre + Ara alanı (tools) */
+  /* Tools da grid: filtre -> arama */
   .tools{
-    gap: 6px;                 /* önce 10px */
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto !important;
+    row-gap: 6px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-content: start !important;
+    align-items: start !important;
+    gap: 0 !important;
   }
 
-  /* Hepsi/Bizde/Gidiyoruz kutusunun iç boşluğu */
   .chipset{
-    padding: 4px;             /* önce 6px */
-    gap: 5px;                 /* önce 6px */
+    width: 100% !important;
+    padding: 4px !important;
+    gap: 4px !important;
+    margin: 0 !important;
   }
 
-  /* Ara kutusunun üst-alt boşluğu hissini azalt */
+  .chip{
+    min-width: 92px !important;
+  }
+
   .search{
-    padding: 9px 10px;        /* 10/12 yerine */
+    width: 100% !important;
+    padding: 9px 10px !important;
+    margin: 0 !important;
   }
 
-  /* Ara ile takvim arası (takvim üst padding'i azalt) */
+  /* Arama ile takvim arasını kıs */
   .calendar{
-    padding: 0 10px 10px;     /* 0 12px 12px yerine */
+    padding: 0 10px 10px !important;
+    margin-top: -2px !important;
   }
+
   .dow{
-    padding: 6px 2px 6px;     /* 10px 2px 8px yerine */
+    padding: 6px 2px 6px !important;
   }
 
-  /* Legend boşluğu da biraz azalsın */
   .legend{
-    padding: 0 10px 10px;     /* 0 12px 12px yerine */
+    padding: 0 10px 10px !important;
   }
 }
 
-/* Çok dar telefonlarda biraz daha da sıkı */
+/* Çok dar cihazlar */
 @media (max-width: 380px){
-  .card-header{ padding: 9px 9px 6px; gap: 6px; }
-  .tools{ gap: 5px; }
-  .calendar{ padding: 0 9px 9px; }
+  .card-header{ row-gap: 5px !important; padding: 7px 8px 6px !important; }
+  .chip{ flex:1 1 100% !important; min-width: 0 !important; }
 }
-
