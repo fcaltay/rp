@@ -1,103 +1,123 @@
-:root{
-  --bg1:#071a14;
-  --bg2:#0b2a20;
-  --card:#0e2f25cc;
-  --text:#e9f5ef;
-  --muted:#b6d0c5;
-  --gold:#d7b55b;
-}
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ramazan İftar Takvimi</title>
+  <link rel="stylesheet" href="styles.css" />
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family: system-ui, sans-serif;
-  background: linear-gradient(160deg,var(--bg1),var(--bg2));
-  color:var(--text);
-}
+  <!-- Icons / PWA -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0b2a20" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="moon">☾</div>
+      <div>
+        <h1>Ramazan İftar Takvimi</h1>
+        <p class="subtitle">Kim bize geliyor, biz kime gidiyoruz</p>
+      </div>
+    </div>
 
-.topbar{
-  padding:14px;
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-}
+    <div class="header-actions">
+      <button class="btn ghost" id="btnToday">Bugün</button>
+      <button class="btn danger" id="btnReset">Sıfırla</button>
+    </div>
+  </header>
 
-.brand{display:flex;gap:10px;align-items:center}
-.moon{
-  width:40px;height:40px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:rgba(215,181,91,.2);
-}
+  <main class="layout">
+    <!-- TAKVİM -->
+    <section class="card calendar-card">
+      <div class="card-header">
+        <div class="month-nav">
+          <button class="iconbtn" id="prevMonth">‹</button>
+          <div>
+            <h2 id="monthTitle">—</h2>
+            <p class="hint">Tarihe tıkla → ekle</p>
+          </div>
+          <button class="iconbtn" id="nextMonth">›</button>
+        </div>
 
-.layout{
-  display:grid;
-  grid-template-columns:1.3fr .9fr;
-  gap:14px;
-  padding:14px;
-}
-@media(max-width:900px){
-  .layout{grid-template-columns:1fr}
-}
+        <div class="tools">
+          <div class="chipset">
+            <button class="chip active" data-filter="all">Hepsi</button>
+            <button class="chip" data-filter="host">Bizde</button>
+            <button class="chip" data-filter="guest">Gidiyoruz</button>
+          </div>
+          <input id="search" class="search" placeholder="Ara..." />
+        </div>
+      </div>
 
-.card{
-  background:var(--card);
-  border-radius:16px;
-  padding-bottom:10px;
-}
+      <div class="calendar">
+        <div class="dow">
+          <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cts</div><div>Paz</div>
+        </div>
+        <div class="grid" id="calendarGrid"></div>
+      </div>
+    </section>
 
-.card-header{
-  padding:12px;
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-}
+    <!-- SAĞ PANEL -->
+    <aside class="card form-card">
+      <div class="card-header">
+        <h2>İftar Ekle / Düzenle</h2>
+        <p class="hint" id="formHint">Takvimden gün seç</p>
+      </div>
 
-.month-nav{display:flex;gap:8px;align-items:center}
-.iconbtn{
-  width:34px;height:34px;
-  border-radius:10px;
-}
+      <form id="eventForm">
+        <input type="hidden" id="eventId" />
 
-.tools{display:flex;gap:8px;flex-wrap:wrap}
-.chipset{display:flex;gap:6px;width:100%}
-.chip{
-  flex:1;
-  padding:8px;
-  border-radius:10px;
-  background:none;
-  color:var(--muted);
-}
-.chip.active{background:rgba(215,181,91,.2);color:#fff}
+        <label class="field">
+          <span>Tarih</span>
+          <input type="date" id="date" required />
+        </label>
 
-.search{
-  width:100%;
-  padding:8px;
-  border-radius:10px;
-}
+        <label class="field">
+          <span>Tür</span>
+          <select id="type">
+            <option value="host">Bizde iftar</option>
+            <option value="guest">Biz iftara gidiyoruz</option>
+          </select>
+        </label>
 
-.calendar{padding:10px}
-.dow,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.day{
-  min-height:80px;
-  border-radius:12px;
-  padding:6px;
-  background:rgba(0,0,0,.2);
-}
+        <label class="field">
+          <span>Kim?</span>
+          <input type="text" id="who" required />
+        </label>
 
-.form-card{padding:0 12px 12px}
-.field{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-textarea,input,select{
-  border-radius:10px;
-  padding:8px;
-}
+        <label class="field" id="menuField">
+          <span>Menü (bizdeyse)</span>
+          <textarea id="menu" rows="2"></textarea>
+        </label>
 
-.next-days{padding:12px}
-.next-item{
-  padding:8px;
-  border-radius:10px;
-  background:rgba(0,0,0,.2);
-  margin-bottom:6px;
-  font-size:13px;
-}
+        <label class="field" id="placeField">
+          <span>Yer (gidiyorsak)</span>
+          <textarea id="place" rows="2"></textarea>
+        </label>
+
+        <label class="field">
+          <span>Not</span>
+          <textarea id="note" rows="2"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn primary">Kaydet</button>
+          <button class="btn danger" type="button" id="btnDelete" disabled>Sil</button>
+        </div>
+      </form>
+
+      <hr class="sep" />
+
+      <!-- BUGÜN + 2 GÜN -->
+      <div class="next-days">
+        <h3>Yaklaşan İftarlar</h3>
+        <div id="nextList"></div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
