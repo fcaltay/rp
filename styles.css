@@ -355,3 +355,58 @@ textarea{ resize:vertical; }
   font-size:12px;
 }
 .smallbtn:hover{ border-color: rgba(215,181,91,.35); }
+
+/* ✅ MOBİLDE ÜST BÖLÜM BOŞLUKLARINI SIKIŞTIR */
+@media (max-width: 720px){
+
+  /* Kart başlığı (Şubat 2026 + filtre + ara) */
+  .card-header{
+    padding: 10px 10px 6px;   /* önce 12/8 gibi büyüktü */
+    gap: 8px;                 /* önce 12px */
+  }
+
+  /* Şubat 2026 ile filtre satırı arası */
+  .month-nav{
+    gap: 8px;                 /* daha sıkı */
+  }
+  .month-title-wrap .hint{
+    margin-top: 2px;          /* 4px yerine */
+  }
+
+  /* Filtre + Ara alanı (tools) */
+  .tools{
+    gap: 6px;                 /* önce 10px */
+  }
+
+  /* Hepsi/Bizde/Gidiyoruz kutusunun iç boşluğu */
+  .chipset{
+    padding: 4px;             /* önce 6px */
+    gap: 5px;                 /* önce 6px */
+  }
+
+  /* Ara kutusunun üst-alt boşluğu hissini azalt */
+  .search{
+    padding: 9px 10px;        /* 10/12 yerine */
+  }
+
+  /* Ara ile takvim arası (takvim üst padding'i azalt) */
+  .calendar{
+    padding: 0 10px 10px;     /* 0 12px 12px yerine */
+  }
+  .dow{
+    padding: 6px 2px 6px;     /* 10px 2px 8px yerine */
+  }
+
+  /* Legend boşluğu da biraz azalsın */
+  .legend{
+    padding: 0 10px 10px;     /* 0 12px 12px yerine */
+  }
+}
+
+/* Çok dar telefonlarda biraz daha da sıkı */
+@media (max-width: 380px){
+  .card-header{ padding: 9px 9px 6px; gap: 6px; }
+  .tools{ gap: 5px; }
+  .calendar{ padding: 0 9px 9px; }
+}
+
