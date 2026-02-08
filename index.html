@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ramazan İftar Takvimi</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="moon" aria-hidden="true">☾</div>
+      <div>
+        <h1>Ramazan İftar Takvimi</h1>
+        <p class="subtitle">Kim bize geliyor, biz kime gidiyoruz — hepsi burada.</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn ghost" id="btnToday">Bugün</button>
+      <button class="btn ghost" id="btnExport">Dışa Aktar</button>
+      <label class="btn ghost file">
+        İçe Aktar
+        <input type="file" id="importFile" accept="application/json" />
+      </label>
+      <button class="btn ghost" id="btnPrint">Yazdır</button>
+      <button class="btn danger" id="btnReset">Sıfırla</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card calendar-card">
+      <div class="card-header">
+        <div class="month-nav">
+          <button class="iconbtn" id="prevMonth" aria-label="Önceki ay">‹</button>
+          <div>
+            <h2 id="monthTitle">—</h2>
+            <p class="hint">Tarihe tıkla → hızlı ekle</p>
+          </div>
+          <button class="iconbtn" id="nextMonth" aria-label="Sonraki ay">›</button>
+        </div>
+
+        <div class="tools">
+          <div class="chipset" role="group" aria-label="Filtre">
+            <button class="chip active" data-filter="all">Hepsi</button>
+            <button class="chip" data-filter="host">Bizde</button>
+            <button class="chip" data-filter="guest">Gidiyoruz</button>
+          </div>
+          <input id="search" class="search" placeholder="Ara: isim, menü, not..." />
+        </div>
+      </div>
+
+      <div class="calendar">
+        <div class="dow">
+          <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cts</div><div>Paz</div>
+        </div>
+        <div class="grid" id="calendarGrid"></div>
+      </div>
+
+      <div class="legend">
+        <span class="pill host">Bizde iftar</span>
+        <span class="pill guest">Biz iftara gidiyoruz</span>
+      </div>
+    </section>
+
+    <aside class="card form-card">
+      <div class="card-header">
+        <h2>İftar Ekle / Düzenle</h2>
+        <p class="hint" id="formHint">Tarih seç veya takvimden tıkla.</p>
+      </div>
+
+      <form id="eventForm">
+        <input type="hidden" id="eventId" />
+
+        <label class="field">
+          <span>Tarih</span>
+          <input type="date" id="date" required />
+        </label>
+
+        <label class="field">
+          <span>Tür</span>
+          <select id="type">
+            <option value="host">Bizde iftar (misafir geliyor)</option>
+            <option value="guest">Biz iftara gidiyoruz</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Kim?</span>
+          <input type="text" id="who" placeholder="Örn: Ahmet & Ayşe, Buddy Talk grubu..." required />
+        </label>
+
+        <div class="two">
+          <label class="field" id="menuField">
+            <span>Menü / Ne yapmayı düşünüyorsun?</span>
+            <textarea id="menu" rows="3" placeholder="Örn: mercimek çorbası + fırında tavuk + pilav..."></textarea>
+          </label>
+
+          <label class="field" id="placeField">
+            <span>Yer / Ev sahibi notu</span>
+            <textarea id="place" rows="3" placeholder="Örn: Jaap’lar, adres notu, park, hediye..."></textarea>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Ek not</span>
+          <textarea id="note" rows="3" placeholder="Örn: çocuklar geliyor, alerji, geç kalacağız..."></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn primary" type="submit" id="btnSave">Kaydet</button>
+          <button class="btn" type="button" id="btnNew">Yeni</button>
+          <button class="btn danger" type="button" id="btnDelete" disabled>Sil</button>
+        </div>
+      </form>
+
+      <hr class="sep" />
+
+      <div class="list-header">
+        <h3>Bu ayın listesi</h3>
+        <p class="hint" id="listHint">—</p>
+      </div>
+
+      <div id="eventList" class="event-list"></div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>🕌 Ramazan planın düzenli kalsın.</span>
+    <span class="muted">Veriler cihazında saklanır (localStorage).</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
