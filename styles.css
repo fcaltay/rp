@@ -8,96 +8,220 @@
 }
 
 *{box-sizing:border-box}
+
 body{
   margin:0;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: linear-gradient(160deg,var(--bg1),var(--bg2));
   color:var(--text);
 }
 
+/* ===== TOP BAR ===== */
 .topbar{
   padding:14px;
   display:flex;
-  justify-content:space-between;
+  flex-wrap:wrap;
   gap:12px;
+  justify-content:space-between;
 }
 
-.brand{display:flex;gap:10px;align-items:center}
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
 .moon{
-  width:40px;height:40px;
-  display:grid;place-items:center;
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
   border-radius:12px;
-  background:rgba(215,181,91,.2);
+  background:rgba(215,181,91,.22);
+  font-size:20px;
 }
 
+.subtitle{
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* ===== LAYOUT ===== */
 .layout{
   display:grid;
   grid-template-columns:1.3fr .9fr;
   gap:14px;
   padding:14px;
 }
-@media(max-width:900px){
+
+@media (max-width:900px){
   .layout{grid-template-columns:1fr}
 }
 
+/* ===== CARD ===== */
 .card{
   background:var(--card);
   border-radius:16px;
-  padding-bottom:10px;
+  overflow:hidden;
 }
 
+/* ===== CARD HEADER (AY + FILTRELER) ===== */
 .card-header{
   padding:12px;
   display:flex;
+  gap:12px;
   justify-content:space-between;
-  gap:10px;
+  align-items:center;
   flex-wrap:wrap;
 }
 
-.month-nav{display:flex;gap:8px;align-items:center}
+/* Ay navigasyonu */
+.month-nav{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex:0 0 auto;
+}
+
 .iconbtn{
-  width:34px;height:34px;
+  width:34px;
+  height:34px;
   border-radius:10px;
+  border:none;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-size:18px;
 }
 
-.tools{display:flex;gap:8px;flex-wrap:wrap}
-.chipset{display:flex;gap:6px;width:100%}
+/* ===== TOOLS (CHIP + SEARCH) ===== */
+.tools{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:flex-end;
+  flex:1 1 100%;
+  flex-wrap:wrap;
+}
+
+/* ===== CHIPLER ===== */
+.chipset{
+  display:flex;
+  gap:6px;
+  width:100%;
+  flex-wrap:wrap;          /* 🔥 taşmayı engeller */
+  justify-content:flex-start;
+}
+
 .chip{
-  flex:1;
-  padding:8px;
+  flex:1 1 30%;            /* 3 buton yan yana, sığmazsa alta */
+  min-width:96px;          /* “Gidiyoruz” KESİLMEZ */
+  padding:8px 6px;
   border-radius:10px;
-  background:none;
+  background:transparent;
+  border:1px solid rgba(255,255,255,.15);
   color:var(--muted);
+  font-size:13px;
+  text-align:center;
+  white-space:nowrap;
+  cursor:pointer;
 }
-.chip.active{background:rgba(215,181,91,.2);color:#fff}
 
+.chip.active{
+  background:rgba(215,181,91,.25);
+  color:#fff;
+  border-color:rgba(215,181,91,.6);
+}
+
+/* ===== SEARCH ===== */
 .search{
   width:100%;
-  padding:8px;
+  padding:8px 10px;
   border-radius:10px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.25);
+  color:#fff;
+  font-size:13px;
 }
 
+/* ===== TAKVİM ===== */
 .calendar{padding:10px}
-.dow,.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+
+.dow,.grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.dow{
+  font-size:12px;
+  color:var(--muted);
+}
+
 .day{
-  min-height:80px;
+  min-height:78px;
   border-radius:12px;
   padding:6px;
-  background:rgba(0,0,0,.2);
+  background:rgba(0,0,0,.22);
+  font-size:12px;
 }
 
-.form-card{padding:0 12px 12px}
-.field{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-textarea,input,select{
-  border-radius:10px;
+/* ===== FORM ===== */
+.form-card{padding:12px}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:8px;
+  font-size:13px;
+}
+
+input,select,textarea{
   padding:8px;
+  border-radius:10px;
+  border:none;
+  font-size:13px;
 }
 
-.next-days{padding:12px}
+/* ===== BUTTONS ===== */
+.btn{
+  padding:9px 12px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+}
+
+.btn.primary{
+  background:rgba(215,181,91,.35);
+  color:#fff;
+}
+
+.btn.danger{
+  background:rgba(255,80,80,.35);
+  color:#fff;
+}
+
+/* ===== NEXT DAYS ===== */
+.next-days{
+  padding:12px;
+}
+
 .next-item{
   padding:8px;
   border-radius:10px;
-  background:rgba(0,0,0,.2);
+  background:rgba(0,0,0,.25);
   margin-bottom:6px;
   font-size:13px;
+}
+
+/* ===== ÇOK DAR TELEFONLAR ===== */
+@media (max-width:380px){
+  .chip{
+    flex:1 1 100%;   /* alt alta */
+    min-width:0;
+  }
+  .iconbtn{
+    width:30px;
+    height:30px;
+  }
 }
