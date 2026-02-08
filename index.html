@@ -18,12 +18,6 @@
 
     <div class="header-actions">
       <button class="btn ghost" id="btnToday">Bugün</button>
-      <button class="btn ghost" id="btnExport">Dışa Aktar</button>
-      <label class="btn ghost file">
-        İçe Aktar
-        <input type="file" id="importFile" accept="application/json" />
-      </label>
-      <button class="btn ghost" id="btnPrint">Yazdır</button>
       <button class="btn danger" id="btnReset">Sıfırla</button>
     </div>
   </header>
@@ -98,13 +92,13 @@
 
           <label class="field" id="placeField">
             <span>Yer / Ev sahibi notu</span>
-            <textarea id="place" rows="3" placeholder="Örn: Jaap’lar, adres notu, park, hediye..."></textarea>
+            <textarea id="place" rows="3" placeholder="Örn: ev adresi vs..."></textarea>
           </label>
         </div>
 
         <label class="field">
           <span>Ek not</span>
-          <textarea id="note" rows="3" placeholder="Örn: çocuklar geliyor, alerji, geç kalacağız..."></textarea>
+          <textarea id="note" rows="3"></textarea>
         </label>
 
         <div class="form-actions">
