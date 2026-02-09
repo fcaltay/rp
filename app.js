@@ -173,7 +173,7 @@ function renderCalendar(){
     dayEvents.slice(0,2).forEach(ev=>{
       const b = document.createElement("div");
       b.className = `badge ${ev.type}`;
-      b.textContent = ev.type === "host" ? `🏠 ${ev.who}` : `🚗 ${ev.who}`;
+      b.textContent = ev.type === "host" ? `🏠` : `🚗`;
       badges.appendChild(b);
     });
     if(dayEvents.length > 2){
